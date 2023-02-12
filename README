@@ -1,0 +1,39 @@
+Steps:
+
+
+1. Clone the QEMU repo and build the docker image. Required only once or after
+`realclean`.
+
+make configure
+
+2. Build QEMU.
+
+make
+
+3. Clean the build.
+
+make clean
+
+4. Trasnfer the rpm file on the host machine. Run
+
+yum install --nogpgcheck -y qemu-upstream-1.0-1.el7.x86_64.rpm
+
+
+Notes:
+
+1. Once `make configure` is run, you can find the QEMU source code in
+`rpmbuild/SOURCES/qemu`.
+
+2. To clean the qemu source code and docker build alongwith make build:
+
+make realclean
+
+3. After `make realclean`, you need to run `make configure` again before `make`.
+
+4. To uninstall the build on the node:
+
+yum remove -y qemu-upstream-1.0-1.el7.x86_64
+
+5. You may need to install docker if not already installed on your dev VM.
+
+yum install -y docker
