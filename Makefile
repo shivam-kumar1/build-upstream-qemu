@@ -5,16 +5,16 @@ MAKE_SCRIPT := "cd /rpmbuild/SOURCES/qemu && ./configure --target-list=x86_64-so
 
 all:
 	docker rm -f $(CONTAINER_NAME)
-	docker run -v $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c $(MAKE_SCRIPT)
+	docker run -itv $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c $(MAKE_SCRIPT)
 configure:
 	docker build -t qemu-upstream .
 	git clone https://github.com/qemu/qemu $(SELF_DIR)rpmbuild/SOURCES/qemu
 console:
 	docker rm -f $(CONTAINER_NAME)
-	docker run -v $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh
+	docker run -itv $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh
 clean:
 	docker rm -f $(CONTAINER_NAME)
-	docker run -v $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c "rm -rf /rpmbuild/BUILD /rpmbuild/RPMS/* /rpmbuild/SRPMS/* /rpmbuild/SOURCES/*.tar.gz"
+	docker run -itv $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c "rm -rf /rpmbuild/BUILD /rpmbuild/RPMS/* /rpmbuild/SRPMS/* /rpmbuild/SOURCES/*.tar.gz"
 realclean:
 	docker rm -f $(CONTAINER_NAME)
-	docker run -v $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c "rm -rf /rpmbuild/BUILD /rpmbuild/RPMS/* /rpmbuild/SRPMS/* /rpmbuild/SOURCES/*"
+	docker run -itv $(SELF_DIR)rpmbuild:/rpmbuild --name=$(CONTAINER_NAME) qemu-upstream /bin/sh -c "rm -rf /rpmbuild/BUILD /rpmbuild/RPMS/* /rpmbuild/SRPMS/* /rpmbuild/SOURCES/*"
