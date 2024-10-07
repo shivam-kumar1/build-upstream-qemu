@@ -1,8 +1,15 @@
 SELF_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CONTAINER_NAME := "QEMU_BUILD"
-DOCKERFILE_PATH := "docker_files/Dockerfile_Centos7"
+DOCKERFILE_PATH := "docker_files/centos/9/Dockerfile"
 
-MAKE_SCRIPT := "cd /rpmbuild/SOURCES/qemu && ./configure --target-list=x86_64-softmmu --enable-debug && make -j $(nproc) && cd /rpmbuild/SOURCES && mv qemu/build qemu-upstream-1.0 && tar --create --file qemu-upstream-1.0.tar.gz qemu-upstream-1.0 && rm -rf qemu-upstream-1.0 && rpmbuild --define \"_topdir /rpmbuild\" -v -ba /rpmbuild/SPECS/qemu-upstream.spec"
+MAKE_SCRIPT := "cd /rpmbuild/SOURCES/qemu && \
+		./configure --target-list=x86_64-softmmu --enable-debug && \
+		make -j $(nproc) && \
+		cd /rpmbuild/SOURCES && \
+		mv qemu/build qemu-upstream-1.0 && \
+		tar --create --file qemu-upstream-1.0.tar.gz qemu-upstream-1.0 && \
+		rm -rf qemu-upstream-1.0 && \
+		rpmbuild --define \"_topdir /rpmbuild\" -v -ba /rpmbuild/SPECS/qemu-upstream.spec"
 
 all:
 	docker rm -f $(CONTAINER_NAME)
